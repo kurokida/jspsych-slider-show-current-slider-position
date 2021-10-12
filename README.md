@@ -4,7 +4,7 @@ This is a plugin that modifies [the jspsych-html-slider-response plugin](https:/
 
 ## Properties specific to this plugin
 
-Please set the show_slider_pos as `ture` to present the current slider position.
+Please set the show_slider_pos property as `ture` to present the current slider position.
 
 ```javascript
 show_slider_pos: {
