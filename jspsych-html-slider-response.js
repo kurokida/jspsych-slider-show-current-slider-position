@@ -73,6 +73,24 @@ jsPsych.plugins['html-slider-response'] = (function() {
         default: false,
         description: 'If true, the participant will have to move the slider before continuing.'
       },
+      show_slider_pos: {
+        type: jsPsych.plugins.parameterType.BOOL,
+        pretty_name: 'Show the current slider position',
+        default: false,
+        description: 'If true, the current slider position is presented.'
+      },
+      prompt_slider_pos1: {
+        type: jsPsych.plugins.parameterType.STRING,
+        pretty_name: 'Prompt immediately before the current slider position.',
+        default: 'The current slider position is ',
+        description: 'Any content here will be displayed immediately before the current slider position.'
+      },
+      prompt_slider_pos2: {
+        type: jsPsych.plugins.parameterType.STRING,
+        pretty_name: 'Prompt immediately after the current slider position.',
+        default: '.',
+        description: 'Any content here will be displayed immediately after the current slider position.'
+      },
       prompt: {
         type: jsPsych.plugins.parameterType.STRING,
         pretty_name: 'Prompt',
@@ -130,6 +148,10 @@ jsPsych.plugins['html-slider-response'] = (function() {
     html += '</div>';
     html += '</div>';
 
+    if (trial.show_slider_pos){
+      html += `<div>${trial.prompt_slider_pos1}<span id="sliderAmount">${trial.slider_start}</span>${trial.prompt_slider_pos2}</div>`
+    }
+
     if (trial.prompt !== null){
       html += trial.prompt;
     }
@@ -143,6 +165,14 @@ jsPsych.plugins['html-slider-response'] = (function() {
       rt: null,
       response: null
     };
+
+    if (trial.show_slider_pos){
+      // https://stackoverflow.com/questions/13896685/html5-slider-with-onchange-function
+      display_element.querySelector('#jspsych-html-slider-response-response').addEventListener('change', function(){
+        var sliderDiv = document.getElementById("sliderAmount");
+        sliderDiv.innerHTML = this.value;
+      })
+    }
 
     if(trial.require_movement){
       display_element.querySelector('#jspsych-html-slider-response-response').addEventListener('click', function(){
